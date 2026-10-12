@@ -5,7 +5,6 @@ WORKDIR /app
 
 COPY backend/ ./backend/
 COPY frontend/ ./frontend/
-COPY data/ ./data/
 
 RUN g++ -std=c++17 -pthread backend/main.cpp -o server
 
