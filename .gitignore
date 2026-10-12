@@ -1,0 +1,13 @@
+
+# Compiled programs
+*.exe
+server
+rr
+
+# Booking data
+tickets.txt
+data/tickets.txt
+
+# Local environment
+.env
+.vscode/

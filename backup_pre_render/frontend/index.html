@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RailNova — Next-Gen C++ Railway Reservation Platform</title>
+  <meta name="description" content="High-performance railway reservation website powered directly by a native C++ object-oriented backend engine.">
+  
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar" id="topNavbar">
+    <div class="nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="#home" class="brand-logo" onclick="switchTab('search')">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="16" rx="3"/>
+            <path d="M4 11h16"/>
+            <path d="M12 3v8"/>
+            <circle cx="8" cy="15" r="1.5" fill="currentColor"/>
+            <circle cx="16" cy="15" r="1.5" fill="currentColor"/>
+            <path d="M6 19l-2 2"/>
+            <path d="M18 19l2 2"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Rail<span class="brand-accent">Nova</span></span>
+          <span class="brand-tagline">C++ POWERED ENGINE</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Menu -->
+      <nav class="nav-menu" id="desktopNavMenu">
+        <button class="nav-link active" id="nav-btn-search" onclick="switchTab('search')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          Search Trains
+        </button>
+        <button class="nav-link" id="nav-btn-pnr" onclick="switchTab('pnr')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+          Check PNR
+        </button>
+        <button class="nav-link" id="nav-btn-cancel" onclick="switchTab('cancel')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+          Cancel Ticket
+        </button>
+        <button class="nav-link" id="nav-btn-admin" onclick="switchTab('admin')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          All Bookings
+        </button>
+      </nav>
+
+      <!-- Right Controls: Status & Mobile Hamburger -->
+      <div class="nav-right">
+        <div class="server-status-pill" id="serverStatusPill" title="Live status of C++ Winsock2 server on port 8080">
+          <span class="status-dot pulsating"></span>
+          <span class="status-label" id="serverStatusText">Connecting...</span>
+        </div>
+
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Navigation Menu" onclick="toggleMobileMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer">
+      <button class="mobile-nav-link active" onclick="switchTab('search'); toggleMobileMenu();">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        Search Trains
+      </button>
+      <button class="mobile-nav-link" onclick="switchTab('pnr'); toggleMobileMenu();">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+        Check PNR Status
+      </button>
+      <button class="mobile-nav-link" onclick="switchTab('cancel'); toggleMobileMenu();">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+        Cancel Ticket &amp; Refund
+      </button>
+      <button class="mobile-nav-link" onclick="switchTab('admin'); toggleMobileMenu();">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+        Demonstration Bookings
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="home">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-ambient-glow"></div>
+    
+    <div class="hero-container">
+      <div class="hero-content">
+        
+        <!-- Hero Tech Badge -->
+        <div class="hero-badge animate-fade-in">
+          <span class="badge-pulse"></span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Native C++ Reservation Logic &bull; Real-Time Memory State
+        </div>
+
+        <!-- Headline & Subtitle -->
+        <h1 class="hero-title animate-fade-in-up">
+          Every Journey Begins with a <br>
+          <span class="gradient-text">Better Experience.</span>
+        </h1>
+        <p class="hero-subtitle animate-fade-in-up delay-1">
+          Modern, high-velocity railway reservations powered directly by our native C++ object-oriented backend.
+          Real-time seat availability validation, automatic 50% child discounts, atomic PNR generation, and 80% instant cancellation refunds.
+        </p>
+
+        <!-- Prominent Floating Search Card -->
+        <div class="search-card-wrapper animate-fade-in-up delay-2">
+          <div class="search-card">
+            
+            <form id="trainSearchForm" onsubmit="handleSearch(event)">
+              <div class="search-grid">
+                
+                <!-- Source Station -->
+                <div class="form-group">
+                  <label for="sourceInput">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                    From Station
+                  </label>
+                  <div class="input-wrapper">
+                    <input type="text" id="sourceInput" placeholder="Delhi, Mumbai, Bangalore..." list="stationList" autocomplete="off">
+                    <span class="input-hint-pill" id="sourceCodePill">STATION</span>
+                  </div>
+                </div>
+
+                <!-- Swap Stations Button -->
+                <div class="swap-wrapper">
+                  <button type="button" class="btn-swap" id="btnSwap" title="Swap Departure and Destination" onclick="swapStations()">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+                  </button>
+                </div>
+
+                <!-- Destination Station -->
+                <div class="form-group">
+                  <label for="destInput">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    To Station
+                  </label>
+                  <div class="input-wrapper">
+                    <input type="text" id="destInput" placeholder="Bhopal, Delhi, Chennai..." list="stationList" autocomplete="off">
+                    <span class="input-hint-pill" id="destCodePill">STATION</span>
+                  </div>
+                </div>
+
+                <!-- Journey Date -->
+                <div class="form-group date-group">
+                  <label for="journeyDate">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Journey Date <span class="demo-tag" title="Demonstration field (predefined trains run on daily schedules)">Demo</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <input type="date" id="journeyDate">
+                  </div>
+                </div>
+
+                <!-- Search Trains Button -->
+                <div class="form-group submit-group">
+                  <label class="desktop-empty-label">&nbsp;</label>
+                  <button type="submit" class="btn btn-primary btn-search" id="btnSearchSubmit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <span>Search Trains</span>
+                  </button>
+                </div>
+
+              </div>
+            </form>
+
+            <datalist id="stationList">
+              <option value="Delhi">NDLS &bull; New Delhi</option>
+              <option value="Mumbai">BCT &bull; Mumbai Central</option>
+              <option value="Bangalore">SBC &bull; KSR Bengaluru</option>
+              <option value="Kolkata">HWH &bull; Howrah Junction</option>
+              <option value="Bhopal">BPL &bull; Bhopal Junction</option>
+              <option value="Chennai">MAS &bull; Chennai Central</option>
+            </datalist>
+
+            <!-- Featured Quick Route Chips -->
+            <div class="quick-routes">
+              <div class="quick-routes-header">
+                <span class="quick-routes-label">Featured Fleet Routes:</span>
+              </div>
+              <div class="quick-routes-chips">
+                <button type="button" class="route-chip" onclick="quickFillRoute('Delhi', 'Bhopal')">
+                  <span class="chip-dot"></span> Delhi ➔ Bhopal
+                </button>
+                <button type="button" class="route-chip" onclick="quickFillRoute('Mumbai', 'Delhi')">
+                  <span class="chip-dot"></span> Mumbai ➔ Delhi
+                </button>
+                <button type="button" class="route-chip" onclick="quickFillRoute('Bangalore', 'Delhi')">
+                  <span class="chip-dot"></span> Bangalore ➔ Delhi
+                </button>
+                <button type="button" class="route-chip" onclick="quickFillRoute('Kolkata', 'Chennai')">
+                  <span class="chip-dot"></span> Kolkata ➔ Chennai
+                </button>
+                <button type="button" class="route-chip reset-chip" onclick="resetAndFetchAllTrains()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                  View All Trains
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Live Value Metrics Pill Bar -->
+        <div class="hero-stats animate-fade-in-up delay-3">
+          <div class="stat-card">
+            <div class="stat-number">4 Express</div>
+            <div class="stat-text">Active Fleet Routes</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-card">
+            <div class="stat-number">50% Child Off</div>
+            <div class="stat-text">Age &lt; 12 Automatic Discount</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-card">
+            <div class="stat-number">80% Refund</div>
+            <div class="stat-text">Instant Cancellation &amp; Seat Restoral</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-card">
+            <div class="stat-number">tickets.txt</div>
+            <div class="stat-text">Live File Persistence</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section (3-Step Connected Experience) -->
+  <section class="how-it-works-section">
+    <div class="section-container">
+      <div class="section-header text-center">
+        <span class="section-eyebrow">EFFORTLESS TRAVEL RESERVATION</span>
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">A seamless 3-step journey from route search to persistent ticket generation.</p>
+      </div>
+
+      <div class="steps-flow-grid">
+        
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-badge">01</div>
+          <div class="step-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </div>
+          <h3 class="step-heading">Search Route</h3>
+          <p class="step-description">
+            Select your departure and arrival stations. Our C++ engine matches available trains with trimmed, case-insensitive comparison.
+          </p>
+        </div>
+
+        <div class="step-connector">
+          <div class="connector-arrow">➔</div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-badge">02</div>
+          <div class="step-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h3 class="step-heading">Enter Details</h3>
+          <p class="step-description">
+            Provide passenger name, age, and required seats. The engine checks live train capacity and calculates child discounts on the fly.
+          </p>
+        </div>
+
+        <div class="step-connector">
+          <div class="connector-arrow">➔</div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-badge">03</div>
+          <div class="step-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 class="step-heading">Instant Confirmation</h3>
+          <p class="step-description">
+            The C++ engine decrements seats, writes the record to <code>tickets.txt</code>, and produces an official digital boarding pass with a unique PNR.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="how-it-works-cta">
+        <button class="btn btn-primary" onclick="switchTab('search'); document.getElementById('sourceInput').focus();">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          <span>Find Available Trains Now</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Main Content Container with Tabs -->
+  <main class="main-container" id="mainContent">
+
+    <!-- TAB 1: Search & Trains View -->
+    <section id="tab-search" class="tab-content active">
+      
+      <div class="section-header-row">
+        <div>
+          <span class="section-eyebrow">FLEET SCHEDULES &amp; LIVE SEATS</span>
+          <h2 class="section-title">Available Trains</h2>
+          <p class="section-subtitle" id="searchResultSummary">Showing all trains loaded from native C++ memory state.</p>
+        </div>
+
+        <!-- Interactive Filter & Sort Toolbar -->
+        <div class="train-toolbar">
+          <div class="filter-group">
+            <label for="sortTrainsSelect" class="toolbar-label">Sort by:</label>
+            <select id="sortTrainsSelect" class="toolbar-select" onchange="applyTrainSorting()">
+              <option value="default">Default Route</option>
+              <option value="fare-asc">Fare: Low to High</option>
+              <option value="fare-desc">Fare: High to Low</option>
+              <option value="seats-desc">Available Seats: High to Low</option>
+            </select>
+          </div>
+
+          <button class="btn btn-secondary btn-sm" onclick="fetchAllTrains()" title="Refetch live data from C++ server">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>Refresh Live Data</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Train Cards Grid -->
+      <div class="train-cards-grid" id="trainsContainer">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Connecting to C++ backend on port 8080...</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 2: PNR Status Lookup -->
+    <section id="tab-pnr" class="tab-content">
+      <div class="section-header text-center">
+        <span class="section-eyebrow">OFFICIAL VERIFICATION PORTAL</span>
+        <h2 class="section-title">PNR Status &amp; Ticket Verification</h2>
+        <p class="section-subtitle">Enter your 4-digit reference number to fetch ticket details from the C++ backend.</p>
+      </div>
+
+      <div class="lookup-card">
+        <form onsubmit="handlePnrLookup(event)" class="lookup-form">
+          <div class="input-wrapper-lg">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="number" id="pnrSearchInput" placeholder="Enter 4-digit PNR (e.g. 1001, 1002)..." required min="1000">
+            <button type="submit" class="btn btn-primary" id="btnPnrSearch">
+              <span>Retrieve Ticket</span>
+            </button>
+          </div>
+        </form>
+        <div class="pnr-helper-hint">
+          <span>Hint: New bookings start from PNR 1001 upwards. View the <a href="javascript:void(0)" onclick="switchTab('admin')">All Bookings table</a> to inspect active PNRs.</span>
+        </div>
+      </div>
+
+      <!-- PNR Result Container -->
+      <div id="pnrResultContainer" class="result-wrapper"></div>
+    </section>
+
+    <!-- TAB 3: Ticket Cancellation -->
+    <section id="tab-cancel" class="tab-content">
+      <div class="section-header text-center">
+        <span class="section-eyebrow">REFUND &amp; SEAT RESTORATION</span>
+        <h2 class="section-title">Ticket Cancellation &amp; Refund Portal</h2>
+        <p class="section-subtitle">Cancel your booking with an automated 80% refund and instant seat restoration to the fleet.</p>
+      </div>
+
+      <div class="cancel-card">
+        <div class="cancel-step-1">
+          <div class="cancel-card-header">
+            <div class="step-badge-pill">STEP 1 OF 2</div>
+            <h3 class="step-title">Enter PNR to Review Cancellation Terms</h3>
+          </div>
+          
+          <form onsubmit="handleCancelLookup(event)" class="lookup-form">
+            <div class="input-wrapper-lg">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <input type="number" id="cancelPnrInput" placeholder="Enter PNR to cancel..." required min="1000">
+              <button type="submit" class="btn btn-warning" id="btnCancelLookup">
+                <span>Inspect Booking</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="cancelDetailsContainer" class="cancel-preview-container"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Demonstration Records (All Bookings) -->
+    <section id="tab-admin" class="tab-content">
+      <div class="section-header-row">
+        <div>
+          <span class="section-eyebrow">SYSTEM DEMONSTRATION &amp; AUDIT</span>
+          <h2 class="section-title">All Active Bookings</h2>
+          <p class="section-subtitle">
+            Inspects records stored in <code>tickets.txt</code> and synchronized with native C++ memory state.
+          </p>
+        </div>
+        
+        <div class="admin-actions">
+          <span class="badge badge-demo">&bull; Open Demo Mode (No Auth Required)</span>
+          <button class="btn btn-secondary btn-sm" onclick="fetchAllBookings()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>Refresh Records</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin Summary Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+          </div>
+          <div>
+            <div class="metric-val" id="metricTotalBookings">0</div>
+            <div class="metric-lab">Total Active Bookings</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="metric-val" id="metricTotalSeats">0</div>
+            <div class="metric-lab">Seats Allocated</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon amber">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div>
+            <div class="metric-val" id="metricTotalRevenue">₹0</div>
+            <div class="metric-lab">Total Fare Revenue</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Filter Bar -->
+      <div class="table-search-bar">
+        <div class="search-input-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="adminTableFilterInput" placeholder="Filter bookings by PNR, passenger name, or train..." oninput="filterBookingsTable()">
+        </div>
+        <span class="table-count-label" id="tableFilterCount">Showing all records</span>
+      </div>
+
+      <!-- Bookings Table Container -->
+      <div class="table-container" id="allBookingsTableWrapper">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>PNR Ref</th>
+              <th>Passenger Name</th>
+              <th>Age</th>
+              <th>Train Number &amp; Name</th>
+              <th>Seats</th>
+              <th>Fare Paid</th>
+              <th>Discount Applied</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Features Section (Actual Technical Capabilities) -->
+    <section class="info-section">
+      <div class="section-header text-center">
+        <span class="section-eyebrow">ENGINEERING &amp; ARCHITECTURE</span>
+        <h3 class="info-header">Core Capabilities of the C++ Reservation Engine</h3>
+        <p class="section-subtitle">Built with object-oriented C++, native Windows Winsock2 networking, and persistent storage.</p>
+      </div>
+
+      <div class="features-grid">
+        
+        <div class="feature-box">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6z"/></svg>
+          </div>
+          <h4>High-Performance C++ Backend</h4>
+          <p>Native multi-threaded Winsock2 HTTP server listening on port 8080 with zero third-party framework overhead.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h4>Atomic Seat Validation</h4>
+          <p>Windows <code>CRITICAL_SECTION</code> mutex locks ensure that multiple concurrent browser requests cannot overbook train capacity.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 12l-4-4-4 4M12 16V9"/></svg>
+          </div>
+          <h4>50% Child Discount</h4>
+          <p>Passengers under 12 automatically receive a 50% fare reduction calculated and applied by backend business logic.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <h4>Persistent File Storage</h4>
+          <p>Every booking and cancellation is persisted to <code>tickets.txt</code> in pipe-delimited format, surviving server restarts seamlessly.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+          </div>
+          <h4>80% Refund Cancellation</h4>
+          <p>Cancellations refund 80% of total fare (20% fee) and automatically restore allocated seats back to the fleet.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </div>
+          <h4>Whitespace &amp; Case Tolerant</h4>
+          <p>Route queries are automatically trimmed and normalized so user variations like <code>" delhi "</code> match correctly.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Multi-Step Booking Modal -->
+  <div class="modal-overlay" id="bookingModal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-card booking-wizard-card">
+      
+      <!-- Wizard Step Indicator -->
+      <div class="wizard-stepper">
+        <div class="step-item active" id="stepIndicator1">
+          <span class="step-num">1</span>
+          <span class="step-name">Train</span>
+        </div>
+        <div class="stepper-line active"></div>
+        <div class="step-item active" id="stepIndicator2">
+          <span class="step-num">2</span>
+          <span class="step-name">Passenger</span>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="step-item" id="stepIndicator3">
+          <span class="step-num">3</span>
+          <span class="step-name">Review &amp; Pay</span>
+        </div>
+      </div>
+
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Book Express Train Ticket</h3>
+          <p class="modal-subtitle">Processed live by native C++ Reservation Engine</p>
+        </div>
+        <button class="modal-close" onclick="closeBookingModal()" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="bookingForm" onsubmit="handleBookingSubmit(event)">
+        <div class="modal-body">
+          
+          <!-- Selected Train Display -->
+          <div class="selected-train-banner">
+            <div class="train-badge" id="modalTrainNumber">#12001</div>
+            <div>
+              <div class="train-main-name" id="modalTrainName">Shatabdi Express</div>
+              <div class="train-route-info" id="modalTrainRoute">Delhi ➔ Bhopal</div>
+            </div>
+            <div class="train-seats-stat">
+              <span class="seat-avail-tag" id="modalAvailableSeats">50 Seats Left</span>
+              <span class="seat-fare-tag" id="modalBaseFare">₹1,200 / seat</span>
+            </div>
+          </div>
+
+          <input type="hidden" id="bookTrainNumber">
+
+          <!-- Passenger Inputs -->
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label for="bookPassengerName">
+                Passenger Full Name <span class="required-star">*</span>
+              </label>
+              <div class="input-wrapper">
+                <input type="text" id="bookPassengerName" placeholder="e.g. Rahul Sharma" required autocomplete="name">
+              </div>
+            </div>
+
+            <div class="form-group flex-1">
+              <label for="bookPassengerAge">
+                Age <span class="required-star">*</span>
+              </label>
+              <div class="input-wrapper">
+                <input type="number" id="bookPassengerAge" placeholder="28" required min="1" max="120" oninput="updateFareCalculator()">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="bookSeatCount">
+                Number of Seats <span class="required-star">*</span>
+              </label>
+              <div class="input-wrapper">
+                <input type="number" id="bookSeatCount" value="1" required min="1" max="50" oninput="updateFareCalculator()">
+              </div>
+            </div>
+
+            <div class="form-group flex-2">
+              <label>Seat Allocation Note</label>
+              <div class="policy-note">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                Current engine validates seat counts (individual coach/berth numbers are not allocated).
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Fare Breakdown Receipt Box -->
+          <div class="fare-calculation-box">
+            <div class="fare-box-header">FARE BREAKDOWN &amp; ESTIMATE</div>
+            
+            <div class="fare-row">
+              <span>Base Fare per Seat:</span>
+              <span id="calcBaseFare">₹0.00</span>
+            </div>
+            <div class="fare-row">
+              <span>Seats Selected:</span>
+              <span id="calcSeats">1 Seat</span>
+            </div>
+            <div class="fare-row discount-row" id="calcDiscountRow" style="display: none;">
+              <span class="text-success">&#10003; 50% Child Discount (Age &lt; 12):</span>
+              <span class="text-success" id="calcDiscountAmount">-50%</span>
+            </div>
+            
+            <div class="fare-divider"></div>
+            
+            <div class="fare-row total-fare-row">
+              <span>Total Payable Fare:</span>
+              <span class="total-fare-val" id="calcTotalFare">₹0.00</span>
+            </div>
+          </div>
+
+          <div class="error-banner" id="bookingErrorBanner" style="display: none;"></div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeBookingModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitBooking">
+            <span class="btn-spinner" id="bookingSpinner" style="display: none;"></span>
+            <span>Confirm Booking &amp; Generate PNR</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Premium Digital Boarding Pass Modal -->
+  <div class="modal-overlay" id="ticketModal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-card ticket-modal-card">
+      <div class="modal-header printable-modal-header">
+        <div class="ticket-header-title">
+          <span class="brand-name">Rail<span class="brand-accent">Nova</span></span>
+          <span class="ticket-type-label">Official Electronic Reservation Slip &bull; Boarding Pass</span>
+        </div>
+        <button class="modal-close no-print" onclick="closeTicketModal()" aria-label="Close ticket">&times;</button>
+      </div>
+
+      <div class="modal-body print-content-body" id="ticketModalContent">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+
+      <div class="modal-footer ticket-footer no-print">
+        <button type="button" class="btn btn-secondary" onclick="closeTicketModal()">Close</button>
+        <button type="button" class="btn btn-primary" onclick="printOfficialTicket()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print Official Ticket
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-text">
+          <span class="brand-name">Rail<span class="brand-accent">Nova</span></span>
+          <span class="brand-tagline">NATIVE C++ BACKEND ARCHITECTURE</span>
+        </div>
+        <p class="footer-desc">
+          High-performance railway reservation demonstration platform seamlessly integrating classical C++ object-oriented business logic with modern responsive web architecture.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Predefined Fleet Trains</h4>
+        <ul>
+          <li><strong>#12001</strong> Shatabdi Express (Delhi ➔ Bhopal)</li>
+          <li><strong>#12951</strong> Rajdhani Express (Mumbai ➔ Delhi)</li>
+          <li><strong>#12627</strong> Karnataka Express (Bangalore ➔ Delhi)</li>
+          <li><strong>#12841</strong> Coromandel Express (Kolkata ➔ Chennai)</li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h4>Engine Features</h4>
+        <ul>
+          <li>Native Winsock2 TCP Multi-threaded Server</li>
+          <li>Atomic Concurrency via <code>CRITICAL_SECTION</code></li>
+          <li>Persistent Storage in <code>tickets.txt</code></li>
+          <li>50% Child Discount &amp; 80% Refund Calculation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 RailNova Platform. Crafted with Native C++ &amp; Modern Web Technologies.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
